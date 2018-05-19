@@ -6,16 +6,33 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Fertilizer</name>
   <url>http://maven.apache.org</url>
+  <parent>
+        <groupId>com.teleonome</groupId>
+        <artifactId>organbuilder</artifactId>
+        <version>1.0.0</version>
+         <relativePath>../organbuilder/pom.xml</relativePath>
+    </parent>
+    
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-     <server.address>Ra.local</server.address>
+
+   <!-- 
+    <server.address>Cleo.local</server.address>
     <server.user>pi</server.user>
+    <server.dir>/home/pi/Teleonome</server.dir>
     <private.key>/Users/arifainchtein/.ssh/chilhuacle</private.key>
+   
+      <server.address>rutasegura.com.mx</server.address>
+    <server.user>arifainchtein</server.user>
+    <server.dir>/home/pi/zhinuhypothalamus</server.dir>
+    <private.key>/Users/arifainchtein/.ssh/dg_rutasegura</private.key>
+     -->
+    
   </properties>
   <repositories>
     <repository>
         <id>local-maven-repo</id>
-        <url>file:///Users/arifainchtein/.m2</url>
+        <url>file:///home/pi/.m2</url>
     </repository>
 </repositories>
   <dependencies>
@@ -64,6 +81,30 @@
   <finalName>Fertilizer</finalName>
   
    <plugins>
+   <plugin>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <configuration>
+      <outputDirectory>../../</outputDirectory>
+        <archive>
+          <manifest>
+            <mainClass>com.teleonome.fertilizer.Fertilizer</mainClass>
+          </manifest>
+        </archive>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+        <appendAssemblyId>false</appendAssemblyId>
+      </configuration>
+      <executions>
+    <execution>
+      <id>make-assembly</id> <!-- this is used for inheritance merges -->
+      <phase>package</phase> <!-- bind to the packaging phase -->
+      <goals>
+        <goal>single</goal>
+      </goals>
+    </execution>
+  </executions>
+    </plugin>
  <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>
@@ -117,73 +158,6 @@
         </replacements>
     </configuration>
 </plugin>
-<plugin>
-      <artifactId>maven-assembly-plugin</artifactId>
-      <configuration>
-        <archive>
-          <manifest>
-            <mainClass>com.teleonome.fertilizer.Fertilizer</mainClass>
-          </manifest>
-        </archive>
-        <descriptorRefs>
-          <descriptorRef>jar-with-dependencies</descriptorRef>
-        </descriptorRefs>
-        <appendAssemblyId>false</appendAssemblyId>
-      </configuration>
-      <executions>
-    <execution>
-      <id>make-assembly</id> <!-- this is used for inheritance merges -->
-      <phase>package</phase> <!-- bind to the packaging phase -->
-      <goals>
-        <goal>single</goal>
-      </goals>
-    </execution>
-  </executions>
-    </plugin>
-<!-- =========================================== -->
-    <!-- make sure antrun is after packaging plugins -->
-    <!-- =========================================== -->
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-antrun-plugin</artifactId>
-      <version>1.8</version>
-      <executions>
-        <execution>
-          <id>scp-to-remote</id>
-          <phase>package</phase>
-          <goals>
-            <goal>run</goal>
-          </goals>
-          <configuration>
-            <target>
-              <!-- keyfile+passphrase or  password, choose one -->
-              <scp localFile="${project.basedir}/target/Fertilizer.jar"
-                remoteToFile="${server.user}@${server.address}:/home/pi/Teleonome/Fertilizer.jar" verbose="true"
-                keyfile="${private.key}"
-                passphrase="">
-              </scp>
-            </target>
-          </configuration>
-        </execution>
-      </executions>
-      <!-- libraries for scp impl      -->
-      <!-- antrun doesn't use os's scp -->
-      <dependencies>
-        <dependency>
-          <groupId>com.jcraft</groupId>
-          <artifactId>jsch</artifactId>
-          <version>0.1.54</version>
-        </dependency>
-        <dependency>
-          <groupId>ant</groupId>
-          <artifactId>ant-jsch</artifactId>
-          <version>1.6.5</version>
-        </dependency>
-      </dependencies>
-    </plugin>
-    <!-- =========================================== -->
-    <!--   antrun plugin end                         -->
-    <!-- =========================================== -->
 
 </plugins>
 

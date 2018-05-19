@@ -46,16 +46,14 @@ public class Fertilizer {
 	private PostgresqlPersistenceManager aDBManager=null;
 	String denomeFileInString;
 	private JSONObject pulseJSONObject;
-	private String buildNumber="27/04/2018 15:47";
+	private String buildNumber="06/05/2018 07:55";
 	private static String spermFileName;
 	private static String eggTeleonomeLocation;
 
 	public Fertilizer(){
 
 
-		String fileName =  Utils.getLocalDirectory() + "lib/Log4J.properties";
-		PropertyConfigurator.configure(fileName);
-		logger = Logger.getLogger(getClass());
+		
 		SimpleDateFormat simpleFormatter = new SimpleDateFormat("dd/MM/yy HH:mm");
 		Calendar cal = Calendar.getInstance();//TimeZone.getTimeZone("GMT+10:00"));
 
@@ -274,6 +272,8 @@ public class Fertilizer {
 								logger.debug("adding denePointer=" + denePointer);
 
 								hoxDene = FertilizationUtils.getDeneBySpermIdentity( completeSpermJSONObject,  fertilizationIdentity) ;
+								logger.debug("hoxDene=" + hoxDene);
+
 								hoxDeneTargetPointer = hoxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
 								hoxDeneTargetIdentity = new Identity(hoxDeneTargetPointer);
 								//
@@ -334,7 +334,10 @@ public class Fertilizer {
 
 						for(int k=0;k<removerDeneWords.length();k++){
 							homeoboxRemoverDeneWord = removerDeneWords.getJSONObject(k);
+							logger.debug("homeoboxRemoverDeneWord " + homeoboxRemoverDeneWord.toString(4));
+							
 							targetDeneWordIdentity = new Identity(homeoboxRemoverDeneWord.getString(TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE));	
+							logger.debug("about to remove " + targetDeneWordIdentity.toString());
 							boolean removed = DenomeUtils.removeDeneWordFromDeneByIdentity( pulseJSONObject, targetDeneWordIdentity);
 							
 						}
@@ -383,7 +386,7 @@ public class Fertilizer {
 			// the last step is to render the new Telenome
 			//
 			String newTeleonomeInString = pulseJSONObject.toString(4);
-			new File("Teleonome.denome").delete();
+			new File(Utils.getLocalDirectory() + "Teleonome.denome").delete();
 			FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
 
 			
@@ -422,12 +425,12 @@ public class Fertilizer {
 	}
 
 	private static String getLastFertilizationDate() {
-		File srcFolder= new File("/home/pi/Teleonome/Sperm_Fert");
+		File srcFolder= new File(Utils.getLocalDirectory()+"Sperm_Fert");
 		File[] files = srcFolder.listFiles();
 		Arrays.sort(files, new Comparator<File>(){
 		    public int compare(File f1, File f2)
 		    {
-		        return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
+		        return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
 		    } });
 		
 		// take the first element of the array
@@ -439,18 +442,18 @@ public class Fertilizer {
 	
 	private static void undoFertilization() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(TeleonomeConstants.SPERM_DATE_FORMAT);
-		String destFolderName="/home/pi/Teleonome/" ;
+		String destFolderName=Utils.getLocalDirectory();//"/home/pi/Teleonome/" ;
 		
 		//
 		// first identify the folrders 
-		File srcFolder= new File("/home/pi/Teleonome/Sperm_Fert");
+		File srcFolder= new File(Utils.getLocalDirectory() + "Sperm_Fert"); //"/home/pi/Teleonome/Sperm_Fert");
 				
 		File[] files = srcFolder.listFiles();
 
 		Arrays.sort(files, new Comparator<File>(){
 		    public int compare(File f1, File f2)
 		    {
-		        return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
+		        return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
 		    } });
 		
 		// take the first element of the array
@@ -462,8 +465,8 @@ public class Fertilizer {
 		//
 		// copy the Teleonome.denome from fertilizatin back to main Teleonome
 		//
-		File srcFile =  new File(srcFolderName + "TeleonomePreFertilization.denome");
-		File destFile = new File("/home/pi/Teleonome/Teleonome.denome");
+		File srcFile =  new File(srcFolderName + "/TeleonomePreFertilization.denome");
+		File destFile = new File(Utils.getLocalDirectory() + "Teleonome.denome");
 		//
 		// First delete the file
 		if(destFile.isFile()) {
@@ -483,29 +486,34 @@ public class Fertilizer {
 		//
 		// now copy the sperm file back up
 		//
-		File dir = new File(".");
 		FileFilter fileFilter = new WildcardFileFilter("*.sperm");
-		File[] spermFiles = dir.listFiles(fileFilter);
+		File[] spermFiles = selectedSourceFolder.listFiles(fileFilter);
+		logger.debug("Number of Sperm files: " + spermFiles.length);
 		File spermFile;
-		for (int i = 0; i < files.length; i++) {
+		for (int i = 0; i < spermFiles.length; i++) {
 		   spermFile = spermFiles[i];
-		   //
-		   // check if the sperm file exists in 
-		   destFile = new File("/home/pi/Teleonome/" + spermFile.getName());
-		   if(destFile.isFile()) {
-			   logger.debug("Erasing existing " + destFile);
-				destFile.delete();
-		   }
 		   
 		   //
-		   // now copy the file
+		   //  copy the file
 		  //
 			try {
+				destFile = new File(Utils.getLocalDirectory()  + spermFile.getName());
+				logger.debug("about to copy sperm file existing "+ spermFile.getAbsolutePath() + "   " + spermFile.isFile() +  " to " + destFile.getAbsolutePath());
 				FileUtils.copyFile(spermFile, destFile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.warn(Utils.getStringException(e));
 			}
+			
+//		   //
+//		   // check if the sperm file exists in 
+//		   destFile = new File("/home/pi/Teleonome/" + spermFile.getName());
+//		   if(destFile.isFile()) {
+//			   logger.debug("Erasing existing " + destFile);
+//				destFile.delete();
+//		   }
+		   
+		   
 		}
 		//
 		// finally remove the directory
@@ -521,8 +529,8 @@ public class Fertilizer {
 	
 	private void moveFiles() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(TeleonomeConstants.SPERM_DATE_FORMAT);
-		String srcFolderName="/home/pi/Teleonome/" ;
-		String destFolderName="/home/pi/Teleonome/Sperm_Fert/" + dateFormat.format(new Timestamp(System.currentTimeMillis())) + "/";
+		String srcFolderName=Utils.getLocalDirectory();//"/home/pi/Teleonome/" ;
+		String destFolderName=Utils.getLocalDirectory() + "Sperm_Fert/" + dateFormat.format(new Timestamp(System.currentTimeMillis())) + "/";
 		File destFolder = new File(destFolderName);
 		destFolder.mkdirs();
 		File srcFile = new File(srcFolderName + "Teleonome.denome");
@@ -556,15 +564,25 @@ public class Fertilizer {
 			System.out.println("Usage: fertilizer completePathSpermFileName ");
 			System.exit(-1);
 		}
+		
+		String fileName =  Utils.getLocalDirectory() + "lib/Log4J.properties";
+		PropertyConfigurator.configure(fileName);
+		logger = Logger.getLogger(com.teleonome.fertilizer.Fertilizer.class);
+		
 		if(args[0].equals("-u")) {
 			String previousStateDate = getLastFertilizationDate();
 			Scanner scanner = new Scanner(System.in);
-			System.out.println("Are you sure you want to revert to previous state  " + previousStateDate + " (Y/n)");
+			System.out.println("Are you sure you want to revert to previous state  " + previousStateDate + " ? (Y/n)");
 			String command = scanner.nextLine();
 			String line;
-			System.out.println("command is " + command);
+			
 			if(command.equals("Y")) {
+				System.out.println("Reverting to previous state");
+				
 				undoFertilization();
+			}else {
+				System.out.println("Goodbye");
+				System.exit(0);
 			}
 			scanner.close();
 		}else {
