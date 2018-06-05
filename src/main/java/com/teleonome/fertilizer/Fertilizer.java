@@ -270,7 +270,6 @@ public class Fertilizer {
 								denePointer =  homeoboxIndexDeneWord.getString(TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
 								fertilizationIdentity = new FertilizationIdentity(denePointer);
 								logger.debug("adding denePointer=" + denePointer);
-
 								hoxDene = FertilizationUtils.getDeneBySpermIdentity( completeSpermJSONObject,  fertilizationIdentity) ;
 								logger.debug("hoxDene=" + hoxDene);
 
