@@ -1,4 +1,4 @@
-package com.teleonome.fertilizer;
+	package com.teleonome.fertilizer;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -241,7 +241,7 @@ public class Fertilizer {
 					newDeneChainName = (String) DenomeUtils.getDeneWordAttributeByDeneWordNameFromDene(actionJSONObject, TeleonomeConstants.SPERM_ACTION_DENEWORD_DENECHAIN_NAME, TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
 					actionTargetIdentity = new Identity(actionTargetPointer);
 					JSONObject newDeneChain = new JSONObject();
-					newDeneChain.put(TeleonomeConstants.DENE_DENE_NAMEE_ATTRIBUTE, newDeneChainName);
+					newDeneChain.put(TeleonomeConstants.DENE_DENE_NAME_ATTRIBUTE, newDeneChainName);
 					newDeneChain.put("Denes", new JSONArray());
 					newDeneChainIdentity = new Identity (actionTargetPointer  + ":" + newDeneChainName);
 					if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneChainIdentity)) {
