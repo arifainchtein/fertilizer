@@ -144,7 +144,7 @@ public class GenerateSensorHomeoboxFromCSV
             double maximum)
     {
         JSONObject sensorValueDeneJSONObject = new JSONObject();
-        sensorValueDeneJSONObject.put(TeleonomeConstants.DENE_DENE_NAMEE_ATTRIBUTE, (new StringBuilder()).append(valueName).append(" Value").toString());
+        sensorValueDeneJSONObject.put(TeleonomeConstants.DENE_DENE_NAME_ATTRIBUTE, (new StringBuilder()).append(valueName).append(" Value").toString());
         sensorValueDeneJSONObject.put(TeleonomeConstants.DENEWORD_TARGET_ATTRIBUTE, (new StringBuilder()).append("@").append(teleonomeName).append(":").append("Internal").append(":").append("Sensors").toString());
         sensorValueDeneJSONObject.put(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE, "Sensor Value Definition");
         JSONArray deneWordsArray = new JSONArray();
@@ -180,7 +180,7 @@ public class GenerateSensorHomeoboxFromCSV
             double maximum)
     {
         JSONObject reportingDeneJSONObject = new JSONObject();
-        reportingDeneJSONObject.put(TeleonomeConstants.DENE_DENE_NAMEE_ATTRIBUTE, (new StringBuilder()).append(valueName).toString());
+        reportingDeneJSONObject.put(TeleonomeConstants.DENE_DENE_NAME_ATTRIBUTE, (new StringBuilder()).append(valueName).toString());
         reportingDeneJSONObject.put(TeleonomeConstants.DENEWORD_TARGET_ATTRIBUTE, (new StringBuilder()).append("@").append(teleonomeName).append(":").append("Purpose").append(":").append("Sensor Data").toString());
         reportingDeneJSONObject.put(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE, "Report");
         JSONArray deneWordsArray = new JSONArray();
