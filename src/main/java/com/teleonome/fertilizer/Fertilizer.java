@@ -250,7 +250,7 @@ public class Fertilizer {
 				}
 			}
 			//
-			// now do the homeboxes
+			// now add the homeboxes
 			//
 			Identity newDeneIdentity;
 			for(int i=0;i<homeboxesJSONArray.length();i++){
@@ -293,8 +293,31 @@ public class Fertilizer {
 							}
 						}
 					}
+					
 					//
-					// the code above will move entire denes.  now do it again but look for the dene type "DeneWOrd Carrier"
+					//  "DeneWOrd Remover"
+					// which is used to remove denewords from existing denes.  
+					JSONObject homeoboxRemoverDeneWord;
+					Identity targetDeneWordIdentity;
+					if(homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE) &&
+						homeoboxDene.get(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_DENE_TYPE_DENEWORD_REMOVER)){
+						JSONArray removerDeneWords = homeoboxDene.getJSONArray("DeneWords");
+						//String removerDeneTargetPointer1 = homeoboxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
+						//Identity removerDeneTargetIdentity1 = new Identity(removerDeneTargetPointer);
+
+						for(int k=0;k<removerDeneWords.length();k++){
+							homeoboxRemoverDeneWord = removerDeneWords.getJSONObject(k);
+							logger.debug("homeoboxRemoverDeneWord " + homeoboxRemoverDeneWord.toString(4));
+							
+							targetDeneWordIdentity = new Identity(homeoboxRemoverDeneWord.getString(TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE));	
+							logger.debug("about to remove " + targetDeneWordIdentity.toString());
+							boolean removed = DenomeUtils.removeDeneWordFromDeneByIdentity( pulseJSONObject, targetDeneWordIdentity);
+							
+						}
+					}
+					
+					//
+					//  "DeneWOrd Carrier"
 					// which is used to insert denewords into existing denes.  there could be many of this because every dene will
 					// have a target which represents the dene where the denewords will be inserted.
 					// The loop is run again, to make sure that all the denes are inserted first, then the denewords
@@ -322,27 +345,7 @@ public class Fertilizer {
 						}
 					}
 					
-					//
-					// now do it again but look for the dene type "DeneWOrd Remover"
-					// which is used to remove denewords from existing denes.  
-					JSONObject homeoboxRemoverDeneWord;
-					Identity targetDeneWordIdentity;
-					if(homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE) &&
-						homeoboxDene.get(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_DENE_TYPE_DENEWORD_REMOVER)){
-						JSONArray removerDeneWords = homeoboxDene.getJSONArray("DeneWords");
-						String removerDeneTargetPointer = homeoboxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
-						Identity removerDeneTargetIdentity = new Identity(removerDeneTargetPointer);
-
-						for(int k=0;k<removerDeneWords.length();k++){
-							homeoboxRemoverDeneWord = removerDeneWords.getJSONObject(k);
-							logger.debug("homeoboxRemoverDeneWord " + homeoboxRemoverDeneWord.toString(4));
-							
-							targetDeneWordIdentity = new Identity(homeoboxRemoverDeneWord.getString(TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE));	
-							logger.debug("about to remove " + targetDeneWordIdentity.toString());
-							boolean removed = DenomeUtils.removeDeneWordFromDeneByIdentity( pulseJSONObject, targetDeneWordIdentity);
-							
-						}
-					}
+					
 					
 					
 				}	
