@@ -1,4 +1,4 @@
-	package com.teleonome.fertilizer;
+package com.teleonome.fertilizer;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class Fertilizer {
 	public Fertilizer(){
 
 
-		
+
 		SimpleDateFormat simpleFormatter = new SimpleDateFormat("dd/MM/yy HH:mm");
 		Calendar cal = Calendar.getInstance();//TimeZone.getTimeZone("GMT+10:00"));
 
@@ -71,34 +71,46 @@ public class Fertilizer {
 		//  stop the Hypothalamus
 		//
 		boolean continueProcess=false;
-		try {
-			int hypothalamusPid = Integer.parseInt(FileUtils.readFileToString(new File("PaceMakerProcess.info")).split("@")[0]);
 
-			ArrayList results = Utils.executeCommand("ps -p " + hypothalamusPid);
-			//
-			// if the pacemaker is running it will return two lines like:
-			//PID TTY          TIME CMD
-			//1872 pts/0    00:02:45 java
-			//if it only returns one line then the process is not running
+		File file = new File("PaceMakerProcess.info");
+		if(file.isFile()) {
+			try {
+				int hypothalamusPid = Integer.parseInt(FileUtils.readFileToString(file).split("@")[0]);
+				ArrayList results = Utils.executeCommand("ps -p " + hypothalamusPid);
+				//
+				// if the pacemaker is running it will return two lines like:
+				//PID TTY          TIME CMD
+				//1872 pts/0    00:02:45 java
+				//if it only returns one line then the process is not running
 
-			if(results.size()<2){
-				logger.info("pacemaker is not running");
+				if(results.size()<2){
+					logger.info("pacemaker is not running");
 
-			}else{
-				logger.info("pacemaker is  running, killing it...");
-				Utils.executeCommand("sudo kill -9  " + hypothalamusPid);
+				}else{
+					logger.info("pacemaker is  running, killing it...");
+					Utils.executeCommand("sudo kill -9  " + hypothalamusPid);
+				}
+				continueProcess=true;
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				logger.warn(Utils.getStringException(e1));
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				logger.warn(Utils.getStringException(e));
+			} catch (NumberFormatException e3) {
+				// TODO Auto-generated catch block
+				e3.printStackTrace();
 			}
+			
+		}else {
+			//
+			// if we are here is most likely diring the creation process when the hypothalamus has
+			// never ran
 			continueProcess=true;
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			logger.warn(Utils.getStringException(e1));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			logger.warn(Utils.getStringException(e));
-		} catch (NumberFormatException e3) {
-			// TODO Auto-generated catch block
-			e3.printStackTrace();
 		}
+
+
+
 
 
 
@@ -180,7 +192,7 @@ public class Fertilizer {
 				// this will be easier by converting the JSN back to a string, do replace and the recreate the JSON
 				//
 				String teleonomeBackInString = pulseJSONObject.toString();
-				String teleonomeUpdatedReferences = teleonomeBackInString.replace("@Egg:", "@" + newTeleonomeName + ":");
+				String teleonomeUpdatedReferences = teleonomeBackInString.replace("@NewEgg:", "@" + newTeleonomeName + ":");
 				pulseJSONObject = new JSONObject(teleonomeUpdatedReferences);
 				//
 				// refresh the denomeobject
@@ -269,9 +281,9 @@ public class Fertilizer {
 							if(homeoboxIndexDeneWord.getString(TeleonomeConstants.DENEWORD_DENEWORD_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_HOX_DENE_POINTER)){
 								denePointer =  homeoboxIndexDeneWord.getString(TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
 								logger.debug("adding denePointer=" + denePointer);
-								
+
 								fertilizationIdentity = new FertilizationIdentity(denePointer);
-								
+
 								hoxDene = FertilizationUtils.getDeneBySpermIdentity( completeSpermJSONObject,  fertilizationIdentity) ;
 								logger.debug("hoxDene=" + hoxDene);
 
@@ -284,7 +296,7 @@ public class Fertilizer {
 								// now insert the dene into the teleonome
 								newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
 								logger.debug("adding1 hoxDeneTargetIdentity=" + hoxDeneTargetIdentity + " HoxDene Name=" + hoxDene.getString("Name")  + " newDeneIdentity=" + newDeneIdentity.toString());
-								
+
 								if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneIdentity)) {
 									DenomeUtils.addDeneToDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
 								}else {
@@ -293,14 +305,14 @@ public class Fertilizer {
 							}
 						}
 					}
-					
+
 					//
 					//  "DeneWOrd Remover"
 					// which is used to remove denewords from existing denes.  
 					JSONObject homeoboxRemoverDeneWord;
 					Identity targetDeneWordIdentity;
 					if(homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE) &&
-						homeoboxDene.get(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_DENE_TYPE_DENEWORD_REMOVER)){
+							homeoboxDene.get(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_DENE_TYPE_DENEWORD_REMOVER)){
 						JSONArray removerDeneWords = homeoboxDene.getJSONArray("DeneWords");
 						//String removerDeneTargetPointer1 = homeoboxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
 						//Identity removerDeneTargetIdentity1 = new Identity(removerDeneTargetPointer);
@@ -308,14 +320,14 @@ public class Fertilizer {
 						for(int k=0;k<removerDeneWords.length();k++){
 							homeoboxRemoverDeneWord = removerDeneWords.getJSONObject(k);
 							logger.debug("homeoboxRemoverDeneWord " + homeoboxRemoverDeneWord.toString(4));
-							
+
 							targetDeneWordIdentity = new Identity(homeoboxRemoverDeneWord.getString(TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE));	
 							logger.debug("about to remove " + targetDeneWordIdentity.toString());
 							boolean removed = DenomeUtils.removeDeneWordFromDeneByIdentity( pulseJSONObject, targetDeneWordIdentity);
-							
+
 						}
 					}
-					
+
 					//
 					//  "DeneWOrd Carrier"
 					// which is used to insert denewords into existing denes.  there could be many of this because every dene will
@@ -324,30 +336,30 @@ public class Fertilizer {
 					JSONObject homeoboxCarrierDeneWord;
 					Identity newDeneWordIdentity;
 					if(homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE) &&
-						homeoboxDene.get(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_DENE_TYPE_DENEWORD_CARRIER)){
+							homeoboxDene.get(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_DENE_TYPE_DENEWORD_CARRIER)){
 						JSONArray carrierDeneWords = homeoboxDene.getJSONArray("DeneWords");
 						String carrierDeneTargetPointer = homeoboxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
 						Identity carrierDeneTargetIdentity = new Identity(carrierDeneTargetPointer);
 
 						for(int k=0;k<carrierDeneWords.length();k++){
 							homeoboxCarrierDeneWord = carrierDeneWords.getJSONObject(k);
-							
-							
+
+
 							newDeneWordIdentity = new Identity (carrierDeneTargetPointer  + ":" + homeoboxCarrierDeneWord.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
 							logger.debug("adding1 hoxDeneTargetIdentity=" + carrierDeneTargetIdentity.toString() + " homeoboxCarrierDeneWord Name=" + homeoboxCarrierDeneWord.getString("Name")  + " newDeneWordIdentity=" + newDeneWordIdentity.toString());
-							
+
 							if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneWordIdentity)) {
 								DenomeUtils.addDeneWordToDeneByIdentity( pulseJSONObject, homeoboxCarrierDeneWord,  carrierDeneTargetIdentity);	
 							}else {
 								logger.debug("Did not add " + carrierDeneTargetIdentity +":"+ homeoboxCarrierDeneWord.getString("Name") + " because it already existed" );
-							
+
 							}
 						}
 					}
-					
-					
-					
-					
+
+
+
+
 				}	
 			}
 
@@ -393,7 +405,7 @@ public class Fertilizer {
 			new File(Utils.getLocalDirectory() + "Teleonome.denome").delete();
 			FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
 
-			
+
 			//
 			// now validate the new denome to see if there are errors
 			//
@@ -432,38 +444,38 @@ public class Fertilizer {
 		File srcFolder= new File(Utils.getLocalDirectory()+"Sperm_Fert");
 		File[] files = srcFolder.listFiles();
 		Arrays.sort(files, new Comparator<File>(){
-		    public int compare(File f1, File f2)
-		    {
-		        return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
-		    } });
-		
+			public int compare(File f1, File f2)
+			{
+				return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
+			} });
+
 		// take the first element of the array
 		SimpleDateFormat dateFormat = new SimpleDateFormat(TeleonomeConstants.SPERM_DATE_FORMAT);
 		return files[0].getName();
-		
+
 	}
-	
-	
+
+
 	private static void undoFertilization() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(TeleonomeConstants.SPERM_DATE_FORMAT);
 		String destFolderName=Utils.getLocalDirectory();//"/home/pi/Teleonome/" ;
-		
+
 		//
 		// first identify the folrders 
 		File srcFolder= new File(Utils.getLocalDirectory() + "Sperm_Fert"); //"/home/pi/Teleonome/Sperm_Fert");
-				
+
 		File[] files = srcFolder.listFiles();
 
 		Arrays.sort(files, new Comparator<File>(){
-		    public int compare(File f1, File f2)
-		    {
-		        return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
-		    } });
-		
+			public int compare(File f1, File f2)
+			{
+				return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
+			} });
+
 		// take the first element of the array
 		File selectedSourceFolder = files[0];
 		String srcFolderName=selectedSourceFolder.getAbsolutePath();
-		
+
 		logger.debug("The last fertilization is " + selectedSourceFolder.getAbsolutePath());
 		File destFolder = new File(destFolderName);
 		//
@@ -477,16 +489,16 @@ public class Fertilizer {
 			logger.debug("Erasing existing Teleonome.denome");
 			destFile.delete();
 		}
-		
+
 		try {
 			FileUtils.copyFile(srcFile, destFile);
 			logger.debug("copying prefertilizartion to Teleonome.denome");
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		//
 		// now copy the sperm file back up
 		//
@@ -495,11 +507,11 @@ public class Fertilizer {
 		logger.debug("Number of Sperm files: " + spermFiles.length);
 		File spermFile;
 		for (int i = 0; i < spermFiles.length; i++) {
-		   spermFile = spermFiles[i];
-		   
-		   //
-		   //  copy the file
-		  //
+			spermFile = spermFiles[i];
+
+			//
+			//  copy the file
+			//
 			try {
 				destFile = new File(Utils.getLocalDirectory()  + spermFile.getName());
 				logger.debug("about to copy sperm file existing "+ spermFile.getAbsolutePath() + "   " + spermFile.isFile() +  " to " + destFile.getAbsolutePath());
@@ -508,16 +520,16 @@ public class Fertilizer {
 				// TODO Auto-generated catch block
 				logger.warn(Utils.getStringException(e));
 			}
-			
-//		   //
-//		   // check if the sperm file exists in 
-//		   destFile = new File("/home/pi/Teleonome/" + spermFile.getName());
-//		   if(destFile.isFile()) {
-//			   logger.debug("Erasing existing " + destFile);
-//				destFile.delete();
-//		   }
-		   
-		   
+
+			//		   //
+			//		   // check if the sperm file exists in 
+			//		   destFile = new File("/home/pi/Teleonome/" + spermFile.getName());
+			//		   if(destFile.isFile()) {
+			//			   logger.debug("Erasing existing " + destFile);
+			//				destFile.delete();
+			//		   }
+
+
 		}
 		//
 		// finally remove the directory
@@ -528,9 +540,9 @@ public class Fertilizer {
 			// TODO Auto-generated catch block
 			logger.warn(Utils.getStringException(e));
 		}
-		
+
 	}
-	
+
 	private void moveFiles() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(TeleonomeConstants.SPERM_DATE_FORMAT);
 		String srcFolderName=Utils.getLocalDirectory();//"/home/pi/Teleonome/" ;
@@ -545,7 +557,7 @@ public class Fertilizer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		srcFile = new File(srcFolderName + spermFileName);
 		destFile =  new File(destFolderName + spermFileName);
 		try {
@@ -568,21 +580,21 @@ public class Fertilizer {
 			System.out.println("Usage: fertilizer completePathSpermFileName ");
 			System.exit(-1);
 		}
-		
+
 		String fileName =  Utils.getLocalDirectory() + "lib/Log4J.properties";
 		PropertyConfigurator.configure(fileName);
 		logger = Logger.getLogger(com.teleonome.fertilizer.Fertilizer.class);
-		
+
 		if(args[0].equals("-u")) {
 			String previousStateDate = getLastFertilizationDate();
 			Scanner scanner = new Scanner(System.in);
 			System.out.println("Are you sure you want to revert to previous state  " + previousStateDate + " ? (Y/n)");
 			String command = scanner.nextLine();
 			String line;
-			
+
 			if(command.equals("Y")) {
 				System.out.println("Reverting to previous state");
-				
+
 				undoFertilization();
 			}else {
 				System.out.println("Goodbye");
@@ -607,7 +619,7 @@ public class Fertilizer {
 			}
 			new Fertilizer();
 		}
-		
+
 	}
 
 }
