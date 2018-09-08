@@ -286,7 +286,16 @@ public class Fertilizer {
 
 								hoxDene = FertilizationUtils.getDeneBySpermIdentity( completeSpermJSONObject,  fertilizationIdentity) ;
 								logger.debug("hoxDene=" + hoxDene);
-
+								if(hoxDene==null) {
+									logger.warn("The sperm is misconfigured, the homebox index " + homeoboxJSONObject.getString("Name") + " points to: " + fertilizationIdentity );
+									logger.warn(fertilizationIdentity );
+									logger.warn( " which can not be found in the homebox." );
+									logger.warn( "  " );
+									logger.warn( " Can not continue" );
+									System.exit(-1);
+									
+																		
+								}
 								hoxDeneTargetPointer = hoxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
 								hoxDeneTargetIdentity = new Identity(hoxDeneTargetPointer);
 								//
@@ -391,13 +400,16 @@ public class Fertilizer {
 
 			//
 			// then do the mutations, which aremoved directly
-			JSONObject mutationJSONObject;
-			for(int i=0;i<mutationsJSONArray.length();i++){
-				mutationJSONObject = mutationsJSONArray.getJSONObject(i);
-				if(!DenomeUtils.containsMutation(pulseJSONObject, mutationJSONObject.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE))) {
-					DenomeUtils.addMutationToMutations(pulseJSONObject, mutationJSONObject);
+			if(mutationsJSONArray!=null && mutationsJSONArray.length()>0) {
+				JSONObject mutationJSONObject;
+				for(int i=0;i<mutationsJSONArray.length();i++){
+					mutationJSONObject = mutationsJSONArray.getJSONObject(i);
+					if(!DenomeUtils.containsMutation(pulseJSONObject, mutationJSONObject.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE))) {
+						DenomeUtils.addMutationToMutations(pulseJSONObject, mutationJSONObject);
+					}
 				}
 			}
+			
 			//
 			// the last step is to render the new Telenome
 			//
