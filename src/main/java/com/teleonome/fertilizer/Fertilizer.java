@@ -298,6 +298,19 @@ public class Fertilizer {
 									
 																		
 								}
+								
+								if(!hoxDene.has(TeleonomeConstants.SPERM_HOX_DENE_TARGET)) {
+									logger.warn( "  " );
+									logger.warn("The sperm is misconfigured, the hoxDene " + hoxDene.getString("Name") );
+									logger.warn(denePointer );
+									logger.warn( " is missing the Target attribute." );
+									logger.warn( "  " );
+									logger.warn( " Can not continue" );
+									System.exit(-1);
+									
+																		
+								}
+								
 								hoxDeneTargetPointer = hoxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
 								hoxDeneTargetIdentity = new Identity(hoxDeneTargetPointer);
 								//
