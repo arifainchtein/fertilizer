@@ -294,6 +294,9 @@ public class Fertilizer {
 									logger.warn( " which can not be found in the homebox." );
 									logger.warn( "  " );
 									logger.warn( " Can not continue" );
+									logger.warn(" ");
+									logger.warn("Reverting to previous state");
+									undoFertilization();
 									System.exit(-1);
 									
 																		
@@ -306,6 +309,9 @@ public class Fertilizer {
 									logger.warn( " is missing the Target attribute." );
 									logger.warn( "  " );
 									logger.warn( " Can not continue" );
+									logger.warn(" ");
+									logger.warn("Reverting to previous state");
+									undoFertilization();
 									System.exit(-1);
 									
 																		
@@ -453,16 +459,13 @@ public class Fertilizer {
 				logger.warn("The fertilization produced a malformed Denome");
 				logger.warn("Reverting to previous state");
 				logger.warn(" ");
-				
+				undoFertilization();
 			}else {
 				
 				new File(Utils.getLocalDirectory() + "Teleonome.denome").delete();
 				FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
 				logger.warn("Fertlization Completed");
 				
-				
-				undoFertilization();
-
 			}
 			
 
