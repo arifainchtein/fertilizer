@@ -459,6 +459,12 @@ public class Fertilizer {
 				logger.warn("The fertilization produced a malformed Denome");
 				logger.warn("Reverting to previous state");
 				logger.warn(" ");
+				//
+				// save the bad teleonome.denome to examin it
+				//
+				new File(Utils.getLocalDirectory() + "Teleonome.bad.denome").delete();
+				FileUtils.write(new File("Teleonome.bad.denome"), newTeleonomeInString);
+				
 				undoFertilization();
 			}else {
 				
