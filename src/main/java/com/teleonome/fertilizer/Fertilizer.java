@@ -35,6 +35,7 @@ import com.teleonome.framework.denome.DenomeValidator;
 import com.teleonome.framework.denome.Identity;
 import com.teleonome.framework.exception.InvalidDenomeException;
 import com.teleonome.framework.exception.MissingDenomeException;
+import com.teleonome.framework.exception.TeleonomeValidationException;
 import com.teleonome.framework.mnemosyne.MnemosyneManager;
 import com.teleonome.framework.persistence.PostgresqlPersistenceManager;
 import com.teleonome.framework.utils.Utils;
@@ -287,8 +288,9 @@ public class Fertilizer {
 								hoxDene = FertilizationUtils.getDeneBySpermIdentity( completeSpermJSONObject,  fertilizationIdentity) ;
 								logger.debug("hoxDene=" + hoxDene);
 								if(hoxDene==null) {
-									logger.warn("The sperm is misconfigured, the homebox index " + homeoboxJSONObject.getString("Name") + " points to: " + fertilizationIdentity );
-									logger.warn(fertilizationIdentity );
+									logger.warn( "  " );
+									logger.warn("The sperm is misconfigured, the homebox index " + homeoboxJSONObject.getString("Name") + " points to: " );
+									logger.warn(denePointer );
 									logger.warn( " which can not be found in the homebox." );
 									logger.warn( "  " );
 									logger.warn( " Can not continue" );
@@ -410,33 +412,43 @@ public class Fertilizer {
 				}
 			}
 			
-			//
-			// the last step is to render the new Telenome
-			//
+			
 			String newTeleonomeInString = pulseJSONObject.toString(4);
-			new File(Utils.getLocalDirectory() + "Teleonome.denome").delete();
-			FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
-
 
 			//
 			// now validate the new denome to see if there are errors
 			//
+			JSONArray validationErrors=null;
 			try {
-				JSONArray validationErrors = DenomeValidator.validate(newTeleonomeInString);
+				validationErrors = DenomeValidator.validate(newTeleonomeInString);
 				if(validationErrors.length()>0) {
-					System.out.println("There were validation errors in the new denome.");
+					logger.warn("There were validation errors in the new denome.");
 					for(int i=0;i<validationErrors.length();i++) {
-						System.out.println(validationErrors.getJSONObject(i).toString(4));
+						logger.warn(validationErrors.getJSONObject(i).toString(4));
 					}
 				}
-
-				System.out.println("Fertlization Completed");
-
 			} catch (MissingDenomeException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.warn(Utils.getStringException(e));
 			}
 
+			//
+			// the last step is to render the new Telenome
+			//
+			if(validationErrors!=null && validationErrors.length()>0) {
+				
+				new File(Utils.getLocalDirectory() + "Teleonome.denome").delete();
+				FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
+				logger.warn("Fertlization Completed");
+			}else {
+				logger.warn(" ");
+				logger.warn("The fertilization produced a malformed Denome");
+				logger.warn("Reverting to previous state");
+				logger.warn(" ");
+				undoFertilization();
+
+			}
+			
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -605,8 +617,7 @@ public class Fertilizer {
 			String line;
 
 			if(command.equals("Y")) {
-				System.out.println("Reverting to previous state");
-
+				logger.warn("Reverting to previous state");
 				undoFertilization();
 			}else {
 				System.out.println("Goodbye");
