@@ -436,15 +436,18 @@ public class Fertilizer {
 			// the last step is to render the new Telenome
 			//
 			if(validationErrors!=null && validationErrors.length()>0) {
-				
-				new File(Utils.getLocalDirectory() + "Teleonome.denome").delete();
-				FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
-				logger.warn("Fertlization Completed");
-			}else {
 				logger.warn(" ");
 				logger.warn("The fertilization produced a malformed Denome");
 				logger.warn("Reverting to previous state");
 				logger.warn(" ");
+				
+			}else {
+				
+				new File(Utils.getLocalDirectory() + "Teleonome.denome").delete();
+				FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
+				logger.warn("Fertlization Completed");
+				
+				
 				undoFertilization();
 
 			}
