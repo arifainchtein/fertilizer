@@ -126,8 +126,8 @@ public class Fertilizer {
 
 		moveFiles();
 
-		File selectedFile = new File(dataDirectory + eggTeleonomeLocation);
-		logger.debug("reading egg from " +dataDirectory + eggTeleonomeLocation);
+		File selectedFile = new File( eggTeleonomeLocation);
+		logger.debug("reading egg from " + eggTeleonomeLocation);
 
 		try {
 			denomeFileInString = FileUtils.readFileToString(selectedFile);
