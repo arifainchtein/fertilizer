@@ -50,7 +50,8 @@ public class Fertilizer {
 	private String buildNumber="06/05/2018 07:55";
 	private static String spermFileName;
 	private static String eggTeleonomeLocation;
-
+	static String dataDirectory = Utils.getLocalDirectory() + "avocado/";
+	
 	public Fertilizer(){
 
 
@@ -125,8 +126,8 @@ public class Fertilizer {
 
 		moveFiles();
 
-		File selectedFile = new File(eggTeleonomeLocation);
-		logger.debug("reading egg from " +eggTeleonomeLocation);
+		File selectedFile = new File(dataDirectory + eggTeleonomeLocation);
+		logger.debug("reading egg from " +dataDirectory + eggTeleonomeLocation);
 
 		try {
 			denomeFileInString = FileUtils.readFileToString(selectedFile);
@@ -135,7 +136,7 @@ public class Fertilizer {
 
 			//
 			// now read the sperm
-			String spermFileInString = FileUtils.readFileToString(new File(spermFileName));
+			String spermFileInString = FileUtils.readFileToString(new File(File + spermFileName));
 			JSONObject completeSpermJSONObject = new JSONObject(spermFileInString);
 			//
 			// verify the integrity and consistency of the sperm
@@ -462,13 +463,13 @@ public class Fertilizer {
 				//
 				// save the bad teleonome.denome to examin it
 				//
-				new File(Utils.getLocalDirectory() + "Teleonome.bad.denome").delete();
+				new File(dataDirectory + "Teleonome.bad.denome").delete();
 				FileUtils.write(new File("Teleonome.bad.denome"), newTeleonomeInString);
 				
 				undoFertilization();
 			}else {
 				
-				new File(Utils.getLocalDirectory() + "Teleonome.denome").delete();
+				new File(dataDirectory + "Teleonome.denome").delete();
 				FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
 				logger.warn("Fertlization Completed");
 				
@@ -490,7 +491,7 @@ public class Fertilizer {
 	}
 
 	private static String getLastFertilizationDate() {
-		File srcFolder= new File(Utils.getLocalDirectory()+"Sperm_Fert");
+		File srcFolder= new File(dataDirectory+"Sperm_Fert");
 		File[] files = srcFolder.listFiles();
 		Arrays.sort(files, new Comparator<File>(){
 			public int compare(File f1, File f2)
@@ -507,11 +508,11 @@ public class Fertilizer {
 
 	private static void undoFertilization() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(TeleonomeConstants.SPERM_DATE_FORMAT);
-		String destFolderName=Utils.getLocalDirectory();//"/home/pi/Teleonome/" ;
+		String destFolderName=dataDirectory;//"/home/pi/Teleonome/" ;
 
 		//
 		// first identify the folrders 
-		File srcFolder= new File(Utils.getLocalDirectory() + "Sperm_Fert"); //"/home/pi/Teleonome/Sperm_Fert");
+		File srcFolder= new File(dataDirectory + "Sperm_Fert"); //"/home/pi/Teleonome/Sperm_Fert");
 
 		File[] files = srcFolder.listFiles();
 
@@ -531,7 +532,7 @@ public class Fertilizer {
 		// copy the Teleonome.denome from fertilizatin back to main Teleonome
 		//
 		File srcFile =  new File(srcFolderName + "/TeleonomePreFertilization.denome");
-		File destFile = new File(Utils.getLocalDirectory() + "Teleonome.denome");
+		File destFile = new File(dataDirectory + "Teleonome.denome");
 		//
 		// First delete the file
 		if(destFile.isFile()) {
@@ -562,7 +563,7 @@ public class Fertilizer {
 			//  copy the file
 			//
 			try {
-				destFile = new File(Utils.getLocalDirectory()  + spermFile.getName());
+				destFile = new File(dataDirectory  + spermFile.getName());
 				logger.debug("about to copy sperm file existing "+ spermFile.getAbsolutePath() + "   " + spermFile.isFile() +  " to " + destFile.getAbsolutePath());
 				FileUtils.copyFile(spermFile, destFile);
 			} catch (IOException e) {
@@ -594,8 +595,8 @@ public class Fertilizer {
 
 	private void moveFiles() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(TeleonomeConstants.SPERM_DATE_FORMAT);
-		String srcFolderName=Utils.getLocalDirectory();//"/home/pi/Teleonome/" ;
-		String destFolderName=Utils.getLocalDirectory() + "Sperm_Fert/" + dateFormat.format(new Timestamp(System.currentTimeMillis())) + "/";
+		String srcFolderName=dataDirectory;//"/home/pi/Teleonome/" ;
+		String destFolderName=dataDirectory + "Sperm_Fert/" + dateFormat.format(new Timestamp(System.currentTimeMillis())) + "/";
 		File destFolder = new File(destFolderName);
 		destFolder.mkdirs();
 		File srcFile = new File(srcFolderName + "Teleonome.denome");
