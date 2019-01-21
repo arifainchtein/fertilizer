@@ -627,7 +627,10 @@ public class Fertilizer {
 	public static void main(String[] args) {
 
 		if(args.length!=1){
-			System.out.println("Usage: fertilizer completePathSpermFileName ");
+			System.out.println("Usage: fertilizer SpermFileName ");
+			System.out.println(" ");
+			System.out.println("Note: Sperm file should be inside of avocado folder");
+			
 			System.exit(-1);
 		}
 
@@ -656,7 +659,7 @@ public class Fertilizer {
 
 			//		spermFileName="/Users/arifainchtein/Data/Teleonome/Ra/AddGeneratorStatus.sperm";
 			eggTeleonomeLocation="Teleonome.denome";
-			File f = new File(spermFileName);
+			File f = new File(dataDirectory + spermFileName);
 			if(!f.isFile()){
 				System.out.println("Sperm file is invalid: " + spermFileName);
 				System.exit(-1);
