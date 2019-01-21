@@ -658,7 +658,7 @@ public class Fertilizer {
 			//eggTeleonomeLocation = args[1];
 
 			//		spermFileName="/Users/arifainchtein/Data/Teleonome/Ra/AddGeneratorStatus.sperm";
-			eggTeleonomeLocation="Teleonome.denome";
+			eggTeleonomeLocation= dataDirectory + "Teleonome.denome";
 			File f = new File(dataDirectory + spermFileName);
 			if(!f.isFile()){
 				System.out.println("Sperm file is invalid: " + spermFileName);
