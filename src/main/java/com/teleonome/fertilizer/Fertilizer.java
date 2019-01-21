@@ -136,7 +136,7 @@ public class Fertilizer {
 
 			//
 			// now read the sperm
-			String spermFileInString = FileUtils.readFileToString(new File(File + spermFileName));
+			String spermFileInString = FileUtils.readFileToString(new File(dataDirectory + spermFileName));
 			JSONObject completeSpermJSONObject = new JSONObject(spermFileInString);
 			//
 			// verify the integrity and consistency of the sperm
