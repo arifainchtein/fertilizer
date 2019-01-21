@@ -301,9 +301,7 @@ public class Fertilizer {
 									System.exit(-1);
 									
 																		
-								}
-								
-								if(!hoxDene.has(TeleonomeConstants.SPERM_HOX_DENE_TARGET)) {
+								}else if(!hoxDene.has(TeleonomeConstants.SPERM_HOX_DENE_TARGET)) {
 									logger.warn( "  " );
 									logger.warn("The sperm is misconfigured, the hoxDene " + hoxDene.getString("Name") );
 									logger.warn(denePointer );
@@ -313,9 +311,7 @@ public class Fertilizer {
 									logger.warn(" ");
 									logger.warn("Reverting to previous state");
 									undoFertilization();
-									System.exit(-1);
-									
-																		
+									System.exit(-1);								
 								}
 								
 								hoxDeneTargetPointer = hoxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
