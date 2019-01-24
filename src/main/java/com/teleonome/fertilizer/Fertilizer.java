@@ -370,7 +370,8 @@ public class Fertilizer {
 						JSONArray carrierDeneWords = homeoboxDene.getJSONArray("DeneWords");
 						String carrierDeneTargetPointer = homeoboxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
 						Identity carrierDeneTargetIdentity = new Identity(carrierDeneTargetPointer);
-
+						logger.debug("carrierDeneWords=" + carrierDeneWords.length()) ;
+						
 						for(int k=0;k<carrierDeneWords.length();k++){
 							homeoboxCarrierDeneWord = carrierDeneWords.getJSONObject(k);
 
