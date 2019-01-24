@@ -388,7 +388,7 @@ public class Fertilizer {
 							if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, carrierDeneTargetIdentity)) {
 								JSONObject newDene = new JSONObject();
 								newDene.put(TeleonomeConstants.DENE_NAME_ATTRIBUTE, carrierDeneTargetIdentity.getDeneName());
-								boolean addDeneResult = DenomeUtils.addDeneToDeneChainByIdentity(purposeJSONObject, newDene, carrierDeneTargetIdentity.getNucleusName(), carrierDeneTargetIdentity.getDenechainName());
+								boolean addDeneResult = DenomeUtils.addDeneToDeneChainByIdentity(pulseJSONObject, newDene, carrierDeneTargetIdentity.getNucleusName(), carrierDeneTargetIdentity.getDenechainName());
 								logger.debug("line 393 addDeneResult=" + addDeneResult);
 								
 							}
