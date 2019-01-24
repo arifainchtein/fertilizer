@@ -363,10 +363,15 @@ public class Fertilizer {
 					// The loop is run again, to make sure that all the denes are inserted first, then the denewords
 					JSONObject homeoboxCarrierDeneWord;
 					Identity newDeneWordIdentity;
-					logger.debug("has deneword carrier=" + homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE)) ;
+					boolean hasDeneWordCarrier=homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE);
+					String deneTypeAttribute = "";
 					
-					if(homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE) &&
-							homeoboxDene.get(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_DENE_TYPE_DENEWORD_CARRIER)){
+					logger.debug("has deneword carrier=" + hasDeneWordCarrier) ;
+					if(hasDeneWordCarrier) {
+						deneTypeAttribute = homeoboxDene.getString(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE);
+						logger.debug("deneTypeAttribute=" + deneTypeAttribute) ;
+					}
+					if(hasDeneWordCarrier && deneTypeAttribute.equals(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE)){
 						JSONArray carrierDeneWords = homeoboxDene.getJSONArray("DeneWords");
 						String carrierDeneTargetPointer = homeoboxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
 						Identity carrierDeneTargetIdentity = new Identity(carrierDeneTargetPointer);
@@ -374,8 +379,6 @@ public class Fertilizer {
 						
 						for(int k=0;k<carrierDeneWords.length();k++){
 							homeoboxCarrierDeneWord = carrierDeneWords.getJSONObject(k);
-
-
 							newDeneWordIdentity = new Identity (carrierDeneTargetPointer  + ":" + homeoboxCarrierDeneWord.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
 							logger.debug("adding1 hoxDeneTargetIdentity=" + carrierDeneTargetIdentity.toString() + " homeoboxCarrierDeneWord Name=" + homeoboxCarrierDeneWord.getString("Name")  + " newDeneWordIdentity=" + newDeneWordIdentity.toString());
 
