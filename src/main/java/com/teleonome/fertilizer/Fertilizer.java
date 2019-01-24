@@ -381,12 +381,22 @@ public class Fertilizer {
 							homeoboxCarrierDeneWord = carrierDeneWords.getJSONObject(k);
 							newDeneWordIdentity = new Identity (carrierDeneTargetPointer  + ":" + homeoboxCarrierDeneWord.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
 							logger.debug("adding hoxDeneTargetIdentity=" + carrierDeneTargetIdentity.toString() + " homeoboxCarrierDeneWord Name=" + homeoboxCarrierDeneWord.getString("Name")  + " newDeneWordIdentity=" + newDeneWordIdentity.toString());
-
+							//
+							// we are adding a deneword given by identity newDeneWordIdentity
+							// check to see if the dene that the deneword belongs to exist
+							// this dene identity is stored in carrierDeneTargetIdentity
+							if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, carrierDeneTargetIdentity)) {
+								JSONObject newDene = new JSONObject();
+								newDene.put(TeleonomeConstants.DENE_NAME_ATTRIBUTE, carrierDeneTargetIdentity.getDeneName());
+								boolean addDeneResult = DenomeUtils.addDeneToDeneChainByIdentity(purposeJSONObject, newDene, carrierDeneTargetIdentity.getNucleusName(), carrierDeneTargetIdentity.getDenechainName());
+								logger.debug("line 393 addDeneResult=" + addDeneResult);
+								
+							}
 							if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneWordIdentity)) {
 								
 								boolean addDeneWordResult = DenomeUtils.addDeneWordToDeneByIdentity( pulseJSONObject, homeoboxCarrierDeneWord,  carrierDeneTargetIdentity);	
-								logger.debug("addDeneWordResult=" + addDeneWordResult +" carrierDeneTargetIdentity=" + carrierDeneTargetIdentity.toString());
-								logger.debug("homeoboxCarrierDeneWord=" + homeoboxCarrierDeneWord.toString(4));
+								logger.debug("line 398 addDeneWordResult=" + addDeneWordResult +" carrierDeneTargetIdentity=" + carrierDeneTargetIdentity.toString());
+								logger.debug("line 399 homeoboxCarrierDeneWord=" + homeoboxCarrierDeneWord.toString(4));
 								
 							}else {
 								logger.debug("Did not add " + carrierDeneTargetIdentity +":"+ homeoboxCarrierDeneWord.getString("Name") + " because it already existed" );
