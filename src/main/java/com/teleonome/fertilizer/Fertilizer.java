@@ -380,9 +380,12 @@ public class Fertilizer {
 						for(int k=0;k<carrierDeneWords.length();k++){
 							homeoboxCarrierDeneWord = carrierDeneWords.getJSONObject(k);
 							newDeneWordIdentity = new Identity (carrierDeneTargetPointer  + ":" + homeoboxCarrierDeneWord.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
-							logger.debug("adding1 hoxDeneTargetIdentity=" + carrierDeneTargetIdentity.toString() + " homeoboxCarrierDeneWord Name=" + homeoboxCarrierDeneWord.getString("Name")  + " newDeneWordIdentity=" + newDeneWordIdentity.toString());
+							logger.debug("adding hoxDeneTargetIdentity=" + carrierDeneTargetIdentity.toString() + " homeoboxCarrierDeneWord Name=" + homeoboxCarrierDeneWord.getString("Name")  + " newDeneWordIdentity=" + newDeneWordIdentity.toString());
 
 							if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneWordIdentity)) {
+								logger.debug("carrierDeneTargetIdentity=" + carrierDeneTargetIdentity.toString());
+								logger.debug("homeoboxCarrierDeneWord=" + homeoboxCarrierDeneWord.toString(4));
+								
 								DenomeUtils.addDeneWordToDeneByIdentity( pulseJSONObject, homeoboxCarrierDeneWord,  carrierDeneTargetIdentity);	
 							}else {
 								logger.debug("Did not add " + carrierDeneTargetIdentity +":"+ homeoboxCarrierDeneWord.getString("Name") + " because it already existed" );
