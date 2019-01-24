@@ -363,7 +363,7 @@ public class Fertilizer {
 					// The loop is run again, to make sure that all the denes are inserted first, then the denewords
 					JSONObject homeoboxCarrierDeneWord;
 					Identity newDeneWordIdentity;
-					logger.debug((homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE) );
+					logger.debug("has deneword carrier=" + homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE)) ;
 					
 					if(homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE) &&
 							homeoboxDene.get(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_DENE_TYPE_DENEWORD_CARRIER)){
