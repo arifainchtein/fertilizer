@@ -381,6 +381,7 @@ public class Fertilizer {
 							homeoboxCarrierDeneWord = carrierDeneWords.getJSONObject(k);
 							newDeneWordIdentity = new Identity (carrierDeneTargetPointer  + ":" + homeoboxCarrierDeneWord.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
 							logger.debug("adding hoxDeneTargetIdentity=" + carrierDeneTargetIdentity.toString() + " homeoboxCarrierDeneWord Name=" + homeoboxCarrierDeneWord.getString("Name")  + " newDeneWordIdentity=" + newDeneWordIdentity.toString());
+							logger.debug("Line 384 newDeneWordIdentity=" + newDeneWordIdentity.toString());
 							//
 							// we are adding a deneword given by identity newDeneWordIdentity
 							// check to see if the dene that the deneword belongs to exist
