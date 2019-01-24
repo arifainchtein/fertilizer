@@ -323,7 +323,7 @@ public class Fertilizer {
 								//
 								// now insert the dene into the teleonome
 								newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
-								logger.info("adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity + " HoxDene Name=" + hoxDene.getString("Name")  + " newDeneIdentity=" + newDeneIdentity.toString());
+								logger.info("line 326 adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity + " HoxDene Name=" + hoxDene.getString("Name")  + " newDeneIdentity=" + newDeneIdentity.toString());
 
 								if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneIdentity)) {
 									DenomeUtils.addDeneToDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
@@ -347,7 +347,7 @@ public class Fertilizer {
 
 						for(int k=0;k<removerDeneWords.length();k++){
 							homeoboxRemoverDeneWord = removerDeneWords.getJSONObject(k);
-							logger.debug("homeoboxRemoverDeneWord " + homeoboxRemoverDeneWord.toString(4));
+							logger.debug("line 350 homeoboxRemoverDeneWord " + homeoboxRemoverDeneWord.toString(4));
 
 							targetDeneWordIdentity = new Identity(homeoboxRemoverDeneWord.getString(TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE));	
 							logger.debug("about to remove " + targetDeneWordIdentity.toString());
@@ -366,12 +366,12 @@ public class Fertilizer {
 					boolean hasDeneWordCarrier=homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE);
 					String deneTypeAttribute = "";
 					
-					logger.debug("has deneword carrier=" + hasDeneWordCarrier) ;
+					logger.debug("line 369 has DENE_DENE_TYPE_ATTRIBUTE carrier=" + hasDeneWordCarrier) ;
 					if(hasDeneWordCarrier) {
 						deneTypeAttribute = homeoboxDene.getString(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE);
-						logger.debug("deneTypeAttribute=" + deneTypeAttribute) ;
+						logger.debug("line 372 deneTypeAttribute=" + deneTypeAttribute) ;
 					}
-					if(hasDeneWordCarrier && deneTypeAttribute.equals(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE)){
+					if(hasDeneWordCarrier && deneTypeAttribute.equals(TeleonomeConstants.SPERM_DENE_TYPE_DENEWORD_CARRIER)){
 						JSONArray carrierDeneWords = homeoboxDene.getJSONArray("DeneWords");
 						String carrierDeneTargetPointer = homeoboxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
 						Identity carrierDeneTargetIdentity = new Identity(carrierDeneTargetPointer);
