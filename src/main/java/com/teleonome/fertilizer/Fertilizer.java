@@ -273,6 +273,7 @@ public class Fertilizer {
 				homeoboxDenes = homeoboxJSONObject.getJSONArray(TeleonomeConstants.SPERM_HOMEOBOX_DENES);
 				for(int j=0;j<homeoboxDenes.length();j++){
 					homeoboxDene = homeoboxDenes.getJSONObject(j);
+					logger.debug("homebox name=" + homeoboxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
 					if(homeoboxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE).equals(TeleonomeConstants.SPERM_HOMEOBOX_INDEX)){
 						//
 						// we are in the correct dene to get the index of all the other denes that need to be acted upon in this homebox
@@ -362,6 +363,8 @@ public class Fertilizer {
 					// The loop is run again, to make sure that all the denes are inserted first, then the denewords
 					JSONObject homeoboxCarrierDeneWord;
 					Identity newDeneWordIdentity;
+					logger.debug((homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE) );
+					
 					if(homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE) &&
 							homeoboxDene.get(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_DENE_TYPE_DENEWORD_CARRIER)){
 						JSONArray carrierDeneWords = homeoboxDene.getJSONArray("DeneWords");
