@@ -323,7 +323,7 @@ public class Fertilizer {
 								//
 								// now insert the dene into the teleonome
 								newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
-								logger.info("line 326 adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity + " HoxDene Name=" + hoxDene.getString("Name")  + " newDeneIdentity=" + newDeneIdentity.toString());
+								logger.debug("line 326 adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity + " HoxDene Name=" + hoxDene.getString("Name")  + " newDeneIdentity=" + newDeneIdentity.toString());
 
 								if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneIdentity)) {
 									DenomeUtils.addDeneToDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
