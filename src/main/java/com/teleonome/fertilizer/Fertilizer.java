@@ -21,6 +21,7 @@ import java.util.Scanner;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.apache.log4j.Category;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.json.JSONArray;  
@@ -51,10 +52,11 @@ public class Fertilizer {
 	private static String spermFileName;
 	private static String eggTeleonomeLocation;
 	static String dataDirectory = Utils.getLocalDirectory() + "avocado/";
+	private static Logger loggerProcessingMsgs;
 
 	public Fertilizer(){
 
-
+		loggerProcessingMsgs =  Logger.getLogger("FertilizerProcessingMsgs");
 
 		SimpleDateFormat simpleFormatter = new SimpleDateFormat("dd/MM/yy HH:mm");
 		Calendar cal = Calendar.getInstance();//TimeZone.getTimeZone("GMT+10:00"));
@@ -68,7 +70,7 @@ public class Fertilizer {
 		}
 
 
-		logger.warn("Fertilizer build " + buildNumber + " Process Number:" + processName);  
+		loggerProcessingMsgs.warn("Fertilizer build " + buildNumber + " Process Number:" + processName);  
 		//
 		//  stop the Hypothalamus
 		//
@@ -95,10 +97,10 @@ public class Fertilizer {
 				continueProcess=true;
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
-				logger.warn(Utils.getStringException(e1));
+				loggerProcessingMsgs.warn(Utils.getStringException(e1));
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				logger.warn(Utils.getStringException(e));
+				loggerProcessingMsgs.warn(Utils.getStringException(e));
 			} catch (NumberFormatException e3) {
 				// TODO Auto-generated catch block
 				e3.printStackTrace();
@@ -357,27 +359,27 @@ public class Fertilizer {
 								hoxDene = FertilizationUtils.getDeneBySpermIdentity( completeSpermJSONObject,  fertilizationIdentity) ;
 								logger.debug("hoxDene=" + hoxDene);
 								if(hoxDene==null) {
-									logger.warn( "  " );
-									logger.warn("The sperm is misconfigured, the homebox index " + homeoboxJSONObject.getString("Name") + " points to: " );
-									logger.warn(denePointer );
-									logger.warn( " which can not be found in the homebox." );
-									logger.warn( "  " );
-									logger.warn( " Can not continue" );
-									logger.warn(" ");
-									logger.warn("Reverting to previous state");
+									loggerProcessingMsgs.warn( "  " );
+									loggerProcessingMsgs.warn("The sperm is misconfigured, the homebox index " + homeoboxJSONObject.getString("Name") + " points to: " );
+									loggerProcessingMsgs.warn(denePointer );
+									loggerProcessingMsgs.warn( " which can not be found in the homebox." );
+									loggerProcessingMsgs.warn( "  " );
+									loggerProcessingMsgs.warn( " Can not continue" );
+									loggerProcessingMsgs.warn(" ");
+									loggerProcessingMsgs.warn("Reverting to previous state");
 									undoFertilization();
 									System.exit(-1);
 
 
 								}else if(!hoxDene.has(TeleonomeConstants.SPERM_HOX_DENE_TARGET)) {
-									logger.warn( "  " );
-									logger.warn("The sperm is misconfigured, the hoxDene " + hoxDene.getString("Name") );
-									logger.warn(denePointer );
-									logger.warn( " is missing the Target attribute." );
-									logger.warn( "  " );
-									logger.warn( " Can not continue" );
-									logger.warn(" ");
-									logger.warn("Reverting to previous state");
+									loggerProcessingMsgs.warn( "  " );
+									loggerProcessingMsgs.warn("The sperm is misconfigured, the hoxDene " + hoxDene.getString("Name") );
+									loggerProcessingMsgs.warn(denePointer );
+									loggerProcessingMsgs.warn( " is missing the Target attribute." );
+									loggerProcessingMsgs.warn( "  " );
+									loggerProcessingMsgs.warn( " Can not continue" );
+									loggerProcessingMsgs.warn(" ");
+									loggerProcessingMsgs.warn("Reverting to previous state");
 									undoFertilization();
 									System.exit(-1);								
 								}
@@ -400,7 +402,7 @@ public class Fertilizer {
 									if(DenomeUtils.containsMutation( pulseJSONObject, mutationName)) {
 										DenomeUtils.addDeneToMutationDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
 									}else {
-										logger.warn("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because the mutation does not existed" );
+										loggerProcessingMsgs.warn("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because the mutation does not existed" );
 									}
 								}else {
 									newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
@@ -409,7 +411,7 @@ public class Fertilizer {
 									if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneIdentity)) {
 										DenomeUtils.addDeneToDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
 									}else {
-										logger.warn("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because it already existed" );
+										loggerProcessingMsgs.warn("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because it already existed" );
 									}
 								}
 								
@@ -484,7 +486,7 @@ public class Fertilizer {
 								logger.debug("line 399 homeoboxCarrierDeneWord=" + homeoboxCarrierDeneWord.toString(4));
 
 							}else {
-								logger.warn("Did not add " + carrierDeneTargetIdentity +":"+ homeoboxCarrierDeneWord.getString("Name") + " because it already existed" );
+								loggerProcessingMsgs.warn("Did not add " + carrierDeneTargetIdentity +":"+ homeoboxCarrierDeneWord.getString("Name") + " because it already existed" );
 
 							}
 						}
@@ -549,24 +551,24 @@ public class Fertilizer {
 			try {
 				validationErrors = DenomeValidator.validate(newTeleonomeInString);
 				if(validationErrors.length()>0) {
-					logger.warn("There were validation errors in the new denome.");
+					loggerProcessingMsgs.warn("There were validation errors in the new denome.");
 					for(int i=0;i<validationErrors.length();i++) {
-						logger.warn(validationErrors.getJSONObject(i).toString(4));
+						loggerProcessingMsgs.warn(validationErrors.getJSONObject(i).toString(4));
 					}
 				}
 			} catch (MissingDenomeException e) {
 				// TODO Auto-generated catch block
-				logger.warn(Utils.getStringException(e));
+				loggerProcessingMsgs.warn(Utils.getStringException(e));
 			}
 
 			//
 			// the last step is to render the new Telenome
 			//
 			if(validationErrors!=null && validationErrors.length()>0) {
-				logger.warn(" ");
-				logger.warn("The fertilization produced a malformed Denome");
-				logger.warn("Reverting to previous state");
-				logger.warn(" ");
+				loggerProcessingMsgs.warn(" ");
+				loggerProcessingMsgs.warn("The fertilization produced a malformed Denome");
+				loggerProcessingMsgs.warn("Reverting to previous state");
+				loggerProcessingMsgs.warn(" ");
 				//
 				// save the bad teleonome.denome to examin it
 				//
@@ -578,7 +580,7 @@ public class Fertilizer {
 				new File(dataDirectory + "Teleonome.PreValidation.denome").delete();
 				new File(dataDirectory + "Teleonome.denome").delete();
 				FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
-				logger.warn("Fertlization Completed");
+				loggerProcessingMsgs.warn("Fertlization Completed");
 
 			}
 
@@ -675,7 +677,7 @@ public class Fertilizer {
 				FileUtils.copyFile(spermFile, destFile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				logger.warn(Utils.getStringException(e));
+				loggerProcessingMsgs.warn(Utils.getStringException(e));
 			}
 
 			//		   //
@@ -695,7 +697,7 @@ public class Fertilizer {
 			FileUtils.deleteDirectory(selectedSourceFolder);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			logger.warn(Utils.getStringException(e));
+			loggerProcessingMsgs.warn(Utils.getStringException(e));
 		}
 
 	}
@@ -753,7 +755,7 @@ public class Fertilizer {
 			String line;
 
 			if(command.equals("Y")) {
-				logger.warn("Reverting to previous state");
+				loggerProcessingMsgs.warn("Reverting to previous state");
 				undoFertilization();
 			}else {
 				System.out.println("Goodbye");
