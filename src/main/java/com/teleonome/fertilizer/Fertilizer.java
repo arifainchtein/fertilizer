@@ -568,6 +568,8 @@ public class Fertilizer {
 				loggerProcessingMsgs.warn(" ");
 				loggerProcessingMsgs.warn("The fertilization produced a malformed Denome");
 				loggerProcessingMsgs.warn("Reverting to previous state");
+				loggerProcessingMsgs.warn("The bad denome was stored in Teleonome.bad.denome");
+				
 				loggerProcessingMsgs.warn(" ");
 				//
 				// save the bad teleonome.denome to examin it
