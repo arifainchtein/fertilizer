@@ -538,6 +538,11 @@ public class Fertilizer {
 			String newTeleonomeInString = pulseJSONObject.toString(4);
 
 			//
+			// before validation write out the denome to file in case
+			// there is a prblem
+			new File(dataDirectory + "Teleonome.PreValidation.denome").delete();
+			FileUtils.write(new File("Teleonome.PreValidation.denome"), newTeleonomeInString);
+			//
 			// now validate the new denome to see if there are errors
 			//
 			JSONArray validationErrors=null;
@@ -570,7 +575,7 @@ public class Fertilizer {
 
 				undoFertilization();
 			}else {
-
+				new File(dataDirectory + "Teleonome.PreValidation.denome").delete();
 				new File(dataDirectory + "Teleonome.denome").delete();
 				FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
 				logger.warn("Fertlization Completed");
