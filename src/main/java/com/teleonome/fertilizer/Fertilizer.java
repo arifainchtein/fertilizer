@@ -400,7 +400,7 @@ public class Fertilizer {
 									if(DenomeUtils.containsMutation( pulseJSONObject, mutationName)) {
 										DenomeUtils.addDeneToMutationDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
 									}else {
-										logger.info("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because the mutation does not existed" );
+										logger.warn("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because the mutation does not existed" );
 									}
 								}else {
 									newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
@@ -409,7 +409,7 @@ public class Fertilizer {
 									if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneIdentity)) {
 										DenomeUtils.addDeneToDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
 									}else {
-										logger.info("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because it already existed" );
+										logger.warn("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because it already existed" );
 									}
 								}
 								
@@ -484,7 +484,7 @@ public class Fertilizer {
 								logger.debug("line 399 homeoboxCarrierDeneWord=" + homeoboxCarrierDeneWord.toString(4));
 
 							}else {
-								logger.debug("Did not add " + carrierDeneTargetIdentity +":"+ homeoboxCarrierDeneWord.getString("Name") + " because it already existed" );
+								logger.warn("Did not add " + carrierDeneTargetIdentity +":"+ homeoboxCarrierDeneWord.getString("Name") + " because it already existed" );
 
 							}
 						}
