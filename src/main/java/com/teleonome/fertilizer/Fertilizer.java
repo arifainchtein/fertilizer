@@ -271,6 +271,7 @@ public class Fertilizer {
 						logger.info("line 271 newMutationType=" + newMutationType);
 						actionTargetIdentity = new Identity(actionTargetPointer);
 						JSONObject newMutation = new JSONObject();
+						newMutation.put("Name", newMutationName);
 						newMutation.put(TeleonomeConstants.DENEWORD_ACTIVE, true);
 						newMutation.put("Execution Mode", newMutationExecutionMode);
 						newMutation.put(TeleonomeConstants.MUTATION_TYPE_ATTRIBUTE, newMutationType);
