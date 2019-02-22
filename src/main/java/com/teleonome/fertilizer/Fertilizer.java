@@ -307,8 +307,22 @@ public class Fertilizer {
 						mutationDeneChainsJSONArray.put(mutationConfiguration);
 						mutationConfiguration.put("Name", "Mutation Configuration");
 						mutationConfiguration.put("Denes", new JSONArray());
-
-
+					
+						JSONObject deneWordInjection = new JSONObject();
+						mutationDeneChainsJSONArray.put(deneWordInjection);
+						deneWordInjection.put("Name", TeleonomeConstants.DENECHAIN_DENEWORD_INJECTION);
+						deneWordInjection.put("Denes", new JSONArray());
+						
+						JSONObject deneInjection = new JSONObject();
+						mutationDeneChainsJSONArray.put(deneInjection);
+						deneInjection.put("Name", TeleonomeConstants.DENECHAIN_DENE_INJECTION);
+						deneInjection.put("Denes", new JSONArray());
+						
+						JSONObject onFinish = new JSONObject();
+						mutationDeneChainsJSONArray.put(onFinish);
+						onFinish.put("Name", TeleonomeConstants.DENE_TYPE_ON_FINISH_MUTATION);
+						onFinish.put("Denes", new JSONArray());
+						
 						DenomeUtils.addMutationToMutations(pulseJSONObject, newMutation);
 					}
 
