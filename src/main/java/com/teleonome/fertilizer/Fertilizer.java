@@ -51,7 +51,7 @@ public class Fertilizer {
 	private static String spermFileName;
 	private static String eggTeleonomeLocation;
 	static String dataDirectory = Utils.getLocalDirectory() + "avocado/";
-	
+
 	public Fertilizer(){
 
 
@@ -103,7 +103,7 @@ public class Fertilizer {
 				// TODO Auto-generated catch block
 				e3.printStackTrace();
 			}
-			
+
 		}else {
 			//
 			// if we are here is most likely diring the creation process when the hypothalamus has
@@ -245,7 +245,7 @@ public class Fertilizer {
 			Collections.sort(postHomeBoxActionEvaluationPositionActionIndex, new IntegerCompare());
 			//
 			// now do the pre homeboxes action
-			String newDeneChainName;
+			String newDeneChainName, newMutationName, newMutationExecutionMode, newMutationType;
 			Identity actionTargetIdentity, newDeneChainIdentity;
 
 			for (Map.Entry<JSONObject, Integer> action : preHomeBoxActionEvaluationPositionActionIndex) {
@@ -261,6 +261,56 @@ public class Fertilizer {
 					if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneChainIdentity)) {
 						DenomeUtils.addDeneChainToNucleusByIdentity( pulseJSONObject, newDeneChain,  actionTargetIdentity);
 					}
+				}else if(actionJSONObject.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE) && actionJSONObject.getString(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_DENE_TYPE_CREATE_MUTATION)){
+					newMutationName = (String) DenomeUtils.getDeneWordAttributeByDeneWordNameFromDene(actionJSONObject, TeleonomeConstants.SPERM_ACTION_DENEWORD_MUTATION_NAME, TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
+					if(!DenomeUtils.containsMutation( pulseJSONObject, newMutationName)) {
+						newMutationExecutionMode = (String) DenomeUtils.getDeneWordAttributeByDeneWordNameFromDene(actionJSONObject, "Execution Mode", TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
+						newMutationType = (String) DenomeUtils.getDeneWordAttributeByDeneWordNameFromDene(actionJSONObject, TeleonomeConstants.MUTATION_TYPE_ATTRIBUTE, TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
+
+						actionTargetIdentity = new Identity(actionTargetPointer);
+						JSONObject newMutation = new JSONObject();
+						newMutation.put(TeleonomeConstants.DENEWORD_ACTIVE, true);
+						newMutation.put("Execution Mode", newMutationExecutionMode);
+						newMutation.put(TeleonomeConstants.MUTATION_TYPE_ATTRIBUTE, newMutationType);
+						JSONArray mutationDeneChainsJSONArray = new JSONArray();
+						newMutation.put("DeneChains", mutationDeneChainsJSONArray);
+
+						JSONObject onLoad = new JSONObject();
+						mutationDeneChainsJSONArray.put(onLoad);
+						onLoad.put("Name", TeleonomeConstants.DENE_TYPE_ON_LOAD_MUTATION);
+						onLoad.put("Denes", new JSONArray());
+
+						JSONObject actionsToExecute = new JSONObject();
+						mutationDeneChainsJSONArray.put(actionsToExecute);
+						actionsToExecute.put("Name", TeleonomeConstants.DENECHAIN_ACTIONS_TO_EXECUTE);
+						actionsToExecute.put("Denes", new JSONArray());
+
+						JSONObject mnemosyconsToExecute = new JSONObject();
+						mutationDeneChainsJSONArray.put(mnemosyconsToExecute);
+						mnemosyconsToExecute.put("Name", TeleonomeConstants.DENECHAIN_MNEMOSYCONS_TO_EXECUTE);
+						mnemosyconsToExecute.put("Denes", new JSONArray());
+
+						JSONObject mutationProcessingLogic = new JSONObject();
+						mutationDeneChainsJSONArray.put(mutationProcessingLogic);
+						mutationProcessingLogic.put("Name", TeleonomeConstants.MUTATION_PROCESSING_LOGIC_DENE_CHAIN_NAME);
+						mutationProcessingLogic.put("Denes", new JSONArray());
+
+						JSONObject mnemosyneOperations = new JSONObject();
+						mutationDeneChainsJSONArray.put(mnemosyneOperations);
+						mnemosyneOperations.put("Name", TeleonomeConstants.DENECHAIN_MNEMOSYNE_OPERATIONS);
+						mnemosyneOperations.put("Denes", new JSONArray());
+
+
+						JSONObject mutationConfiguration = new JSONObject();
+						mutationDeneChainsJSONArray.put(mutationConfiguration);
+						mutationConfiguration.put("Name", "Mutation Configuration");
+						mutationConfiguration.put("Denes", new JSONArray());
+
+
+						DenomeUtils.addMutationToMutations(purposeJSONObject, newMutation);
+					}
+
+
 				}
 			}
 			//
@@ -300,8 +350,8 @@ public class Fertilizer {
 									logger.warn("Reverting to previous state");
 									undoFertilization();
 									System.exit(-1);
-									
-																		
+
+
 								}else if(!hoxDene.has(TeleonomeConstants.SPERM_HOX_DENE_TARGET)) {
 									logger.warn( "  " );
 									logger.warn("The sperm is misconfigured, the hoxDene " + hoxDene.getString("Name") );
@@ -314,7 +364,7 @@ public class Fertilizer {
 									undoFertilization();
 									System.exit(-1);								
 								}
-								
+
 								hoxDeneTargetPointer = hoxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
 								hoxDeneTargetIdentity = new Identity(hoxDeneTargetPointer);
 								//
@@ -365,7 +415,7 @@ public class Fertilizer {
 					Identity newDeneWordIdentity;
 					boolean hasDeneWordCarrier=homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE);
 					String deneTypeAttribute = "";
-					
+
 					logger.debug("line 369 has DENE_DENE_TYPE_ATTRIBUTE carrier=" + hasDeneWordCarrier) ;
 					if(hasDeneWordCarrier) {
 						deneTypeAttribute = homeoboxDene.getString(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE);
@@ -376,7 +426,7 @@ public class Fertilizer {
 						String carrierDeneTargetPointer = homeoboxDene.getString(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
 						Identity carrierDeneTargetIdentity = new Identity(carrierDeneTargetPointer);
 						logger.debug("carrierDeneWords=" + carrierDeneWords.length()) ;
-						
+
 						for(int k=0;k<carrierDeneWords.length();k++){
 							homeoboxCarrierDeneWord = carrierDeneWords.getJSONObject(k);
 							newDeneWordIdentity = new Identity (carrierDeneTargetPointer  + ":" + homeoboxCarrierDeneWord.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
@@ -392,14 +442,14 @@ public class Fertilizer {
 								newDene.put("DeneWords", new JSONArray());
 								boolean addDeneResult = DenomeUtils.addDeneToDeneChainByIdentity(pulseJSONObject, newDene, carrierDeneTargetIdentity.getNucleusName(), carrierDeneTargetIdentity.getDenechainName());
 								logger.debug("line 393 addDeneResult=" + addDeneResult);
-								
+
 							}
 							if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneWordIdentity)) {
-								
+
 								boolean addDeneWordResult = DenomeUtils.addDeneWordToDeneByIdentity( pulseJSONObject, homeoboxCarrierDeneWord,  carrierDeneTargetIdentity);	
 								logger.debug("line 398 addDeneWordResult=" + addDeneWordResult +" carrierDeneTargetIdentity=" + carrierDeneTargetIdentity.toString());
 								logger.debug("line 399 homeoboxCarrierDeneWord=" + homeoboxCarrierDeneWord.toString(4));
-								
+
 							}else {
 								logger.debug("Did not add " + carrierDeneTargetIdentity +":"+ homeoboxCarrierDeneWord.getString("Name") + " because it already existed" );
 
@@ -450,8 +500,8 @@ public class Fertilizer {
 					}
 				}
 			}
-			
-			
+
+
 			String newTeleonomeInString = pulseJSONObject.toString(4);
 
 			//
@@ -484,16 +534,16 @@ public class Fertilizer {
 				//
 				new File(dataDirectory + "Teleonome.bad.denome").delete();
 				FileUtils.write(new File("Teleonome.bad.denome"), newTeleonomeInString);
-				
+
 				undoFertilization();
 			}else {
-				
+
 				new File(dataDirectory + "Teleonome.denome").delete();
 				FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
 				logger.warn("Fertlization Completed");
-				
+
 			}
-			
+
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -649,7 +699,7 @@ public class Fertilizer {
 			System.out.println("Usage: fertilizer SpermFileName ");
 			System.out.println(" ");
 			System.out.println("Note: Sperm file should be inside of avocado folder");
-			
+
 			System.exit(-1);
 		}
 
