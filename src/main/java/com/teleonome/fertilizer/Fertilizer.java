@@ -389,14 +389,30 @@ public class Fertilizer {
 								hoxDene.remove(TeleonomeConstants.SPERM_HOX_DENE_TARGET);
 								//
 								// now insert the dene into the teleonome
-								newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
-								logger.debug("line 326 adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity + " HoxDene Name=" + hoxDene.getString("Name")  + " newDeneIdentity=" + newDeneIdentity.toString());
+								// there are two posibilities, the dene is going to be inserted into a 
+								// nucleus:denechain or it will be inserted into a mutation
+								// if its going into a nucleus:denechain then
+								if(DenomeUtils.isMutationIdentity(hoxDeneTargetPointer)) {
+									String mutationName=hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE);
+									newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + mutationName);
+									logger.debug("line 397 adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity + " HoxDene Name=" + hoxDene.getString("Name")  + " newDeneIdentity=" + newDeneIdentity.toString());
 
-								if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneIdentity)) {
-									DenomeUtils.addDeneToDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
+									if(DenomeUtils.containsMutation( pulseJSONObject, mutationName)) {
+										DenomeUtils.addDeneToMutationDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
+									}else {
+										logger.info("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because the mutation does not existed" );
+									}
 								}else {
-									logger.info("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because it already existed" );
+									newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
+									logger.debug("line 405 adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity + " HoxDene Name=" + hoxDene.getString("Name")  + " newDeneIdentity=" + newDeneIdentity.toString());
+
+									if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneIdentity)) {
+										DenomeUtils.addDeneToDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
+									}else {
+										logger.info("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because it already existed" );
+									}
 								}
+								
 							}
 						}
 					}
