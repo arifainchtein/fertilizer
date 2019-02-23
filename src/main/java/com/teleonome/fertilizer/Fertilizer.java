@@ -314,7 +314,13 @@ public class Fertilizer {
 						JSONObject deneWordInjection = new JSONObject();
 						mutationDeneChainsJSONArray.put(deneWordInjection);
 						deneWordInjection.put("Name", TeleonomeConstants.DENECHAIN_DENEWORD_INJECTION);
-						deneWordInjection.put("Denes", new JSONArray());
+						JSONArray denesArray = new JSONArray();
+						deneWordInjection.put("Denes",denesArray);
+						JSONObject deneCarrierDene = new JSONObject();
+						denesArray.put(deneCarrierDene);
+						deneCarrierDene.put(TeleonomeConstants.DENE_DENE_NAME_ATTRIBUTE, TeleonomeConstants.DENE_TYPE_DENEWORD_CARRIER);
+						deneCarrierDene.put("DeneWords", new JSONArray());
+						deneCarrierDene.put(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE, TeleonomeConstants.DENE_TYPE_DENEWORD_CARRIER);
 						
 						JSONObject deneInjection = new JSONObject();
 						mutationDeneChainsJSONArray.put(deneInjection);
