@@ -55,7 +55,7 @@ public class Fertilizer {
 	
 	public Fertilizer(){
 
-		logger =  Logger.getLogger("FertilizerProcessingMsgs");
+		logger =  Logger.getLogger(getClass());
 
 		SimpleDateFormat simpleFormatter = new SimpleDateFormat("dd/MM/yy HH:mm");
 		Calendar cal = Calendar.getInstance();//TimeZone.getTimeZone("GMT+10:00"));
