@@ -332,6 +332,8 @@ public class Fertilizer {
 						onFinish.put("Denes", new JSONArray());
 						
 						DenomeUtils.addMutationToMutations(pulseJSONObject, newMutation);
+					}else {
+						
 					}
 
 
@@ -567,7 +569,9 @@ public class Fertilizer {
 			}
 
 			//
-			// the last step is to render the new Telenome
+			// if there were no validation errors, then 
+			// generate a report and 
+			// render the new Telenome
 			//
 			if(validationErrors!=null && validationErrors.length()>0) {
 				logger.warn(" ");
@@ -584,9 +588,29 @@ public class Fertilizer {
 
 				undoFertilization();
 			}else {
+				//
+				// the Teleonome.denome file
+				//
 				new File(dataDirectory + "Teleonome.PreValidation.denome").delete();
 				new File(dataDirectory + "Teleonome.denome").delete();
 				FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
+				//
+				// now write the phisiology reprt
+				//
+				ArrayList<String> htmlArrayList;
+				try {
+					htmlArrayList = DenomeUtils.generateDenomePhysiologyReportHTMLTable(pulseJSONObject);
+					String htmlText = String.join( System.getProperty("line.separator"), htmlArrayList);
+					new File(dataDirectory + "TeleonomeAnalisis.html").delete();
+					FileUtils.write(new File("TeleonomeAnalisis.html"), htmlText);
+					
+				} catch (MissingDenomeException | TeleonomeValidationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				
 				logger.warn("Fertlization Completed");
 
 			}
