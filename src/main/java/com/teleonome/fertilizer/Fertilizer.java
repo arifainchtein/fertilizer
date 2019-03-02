@@ -594,6 +594,7 @@ public class Fertilizer {
 				new File(dataDirectory + "Teleonome.PreValidation.denome").delete();
 				new File(dataDirectory + "Teleonome.denome").delete();
 				FileUtils.write(new File("Teleonome.denome"), newTeleonomeInString);
+				
 				//
 				// now write the phisiology reprt
 				//
@@ -602,13 +603,17 @@ public class Fertilizer {
 					htmlArrayList = DenomeUtils.generateDenomePhysiologyReportHTMLTable(pulseJSONObject);
 					String htmlText = String.join( System.getProperty("line.separator"), htmlArrayList);
 					new File(dataDirectory + "TeleonomeAnalisis.html").delete();
-					FileUtils.write(new File("TeleonomeAnalisis.html"), htmlText);
+					FileUtils.write(new File(dataDirectory +"TeleonomeAnalisis.html"), htmlText);
 					
 				} catch (MissingDenomeException | TeleonomeValidationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+				logger.warn("Fertilization Process Complete.");
+				logger.warn(" ");
+				logger.warn("look for:");
+				logger.warn("/home/pi/Teleonome.denome");
+				logger.warn("/home/pi/avocado/TeleonomeAnalisis.html");
 				
 				
 				logger.warn("Fertlization Completed");
