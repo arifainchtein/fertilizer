@@ -340,7 +340,11 @@ public class Fertilizer {
 				}
 			}
 			//
-			// now add the homeboxes
+			// There are three parts now, first add all the homeoboxes.  this is one by getting the nomeobox index dene and running through all the pointers
+			// after that then you process the deneword removers and deneword carrriers.
+			// You need to loop twice, first just to process the index and thereby  create the homeboxes, 
+			// and then the removers and carrier.  this is to make sure that the denes are added before a deneword carrier is processed
+			
 			//
 			Identity newDeneIdentity;
 			String homeoboxDeneName;
@@ -436,7 +440,11 @@ public class Fertilizer {
 							}
 						}
 					}
-
+				}
+				for(int j=0;j<homeoboxDenes.length();j++){
+						homeoboxDene = homeoboxDenes.getJSONObject(j);
+						homeoboxDeneName = homeoboxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE);
+						logger.debug("homeoboxDeneName name=" + homeoboxDeneName);
 					//
 					//  "DeneWOrd Remover"
 					// which is used to remove denewords from existing denes.  
