@@ -457,13 +457,14 @@ public class Fertilizer {
 					// The loop is run again, to make sure that all the denes are inserted first, then the denewords
 					JSONObject homeoboxCarrierDeneWord;
 					Identity newDeneWordIdentity;
+					logger.debug("line 460 " +homeoboxDeneName + " has DENE_DENE_TYPE_ATTRIBUTE carrier=" + homeoboxDene.toString(4)) ;
 					boolean hasDeneWordCarrier=homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE);
 					String deneTypeAttribute = "";
 
-					logger.debug("line 369 " +homeoboxDeneName + " has DENE_DENE_TYPE_ATTRIBUTE carrier=" + hasDeneWordCarrier) ;
+					logger.debug("line 464 " +homeoboxDeneName + " has DENE_DENE_TYPE_ATTRIBUTE carrier=" + hasDeneWordCarrier) ;
 					if(hasDeneWordCarrier) {
 						deneTypeAttribute = homeoboxDene.getString(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE);
-						logger.debug("line 372 deneTypeAttribute=" + deneTypeAttribute) ;
+						logger.debug("line 467 deneTypeAttribute=" + deneTypeAttribute) ;
 					}
 					if(hasDeneWordCarrier && deneTypeAttribute.equals(TeleonomeConstants.SPERM_DENE_TYPE_DENEWORD_CARRIER)){
 						JSONArray carrierDeneWords = homeoboxDene.getJSONArray("DeneWords");
@@ -475,7 +476,7 @@ public class Fertilizer {
 							homeoboxCarrierDeneWord = carrierDeneWords.getJSONObject(k);
 							newDeneWordIdentity = new Identity (carrierDeneTargetPointer  + ":" + homeoboxCarrierDeneWord.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
 							logger.debug("adding hoxDeneTargetIdentity=" + carrierDeneTargetIdentity.toString() + " homeoboxCarrierDeneWord Name=" + homeoboxCarrierDeneWord.getString("Name")  + " newDeneWordIdentity=" + newDeneWordIdentity.toString());
-							logger.debug("Line 384 newDeneWordIdentity=" + newDeneWordIdentity.toString());
+							logger.debug("Line 479 newDeneWordIdentity=" + newDeneWordIdentity.toString());
 							//
 							// we are adding a deneword given by identity newDeneWordIdentity
 							// check to see if the dene that the deneword belongs to exist
@@ -485,14 +486,14 @@ public class Fertilizer {
 								newDene.put(TeleonomeConstants.DENE_NAME_ATTRIBUTE, carrierDeneTargetIdentity.getDeneName());
 								newDene.put("DeneWords", new JSONArray());
 								boolean addDeneResult = DenomeUtils.addDeneToDeneChainByIdentity(pulseJSONObject, newDene, carrierDeneTargetIdentity.getNucleusName(), carrierDeneTargetIdentity.getDenechainName());
-								logger.debug("line 393 addDeneResult=" + addDeneResult);
+								logger.debug("line 489 addDeneResult=" + addDeneResult);
 
 							}
 							if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneWordIdentity)) {
 
 								boolean addDeneWordResult = DenomeUtils.addDeneWordToDeneByIdentity( pulseJSONObject, homeoboxCarrierDeneWord,  carrierDeneTargetIdentity);	
-								logger.debug("line 398 addDeneWordResult=" + addDeneWordResult +" carrierDeneTargetIdentity=" + carrierDeneTargetIdentity.toString());
-								logger.debug("line 399 homeoboxCarrierDeneWord=" + homeoboxCarrierDeneWord.toString(4));
+								logger.debug("line 495 addDeneWordResult=" + addDeneWordResult +" carrierDeneTargetIdentity=" + carrierDeneTargetIdentity.toString());
+								logger.debug("line 496 homeoboxCarrierDeneWord=" + homeoboxCarrierDeneWord.toString(4));
 
 							}else {
 								logger.warn("Did not add " + carrierDeneTargetIdentity +":"+ homeoboxCarrierDeneWord.getString("Name") + " because it already existed" );
