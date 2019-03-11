@@ -343,13 +343,15 @@ public class Fertilizer {
 			// now add the homeboxes
 			//
 			Identity newDeneIdentity;
+			String homeoboxDeneName;
 			for(int i=0;i<homeboxesJSONArray.length();i++){
 				homeoboxJSONObject = homeboxesJSONArray.getJSONObject(i);
 				allDenePointersForHomebox = new ArrayList();
 				homeoboxDenes = homeoboxJSONObject.getJSONArray(TeleonomeConstants.SPERM_HOMEOBOX_DENES);
 				for(int j=0;j<homeoboxDenes.length();j++){
 					homeoboxDene = homeoboxDenes.getJSONObject(j);
-					logger.debug("homebox name=" + homeoboxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
+					homeoboxDeneName = homeoboxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE);
+					logger.debug("homeoboxDeneName name=" + homeoboxDeneName);
 					if(homeoboxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE).equals(TeleonomeConstants.SPERM_HOMEOBOX_INDEX)){
 						//
 						// we are in the correct dene to get the index of all the other denes that need to be acted upon in this homebox
@@ -458,7 +460,7 @@ public class Fertilizer {
 					boolean hasDeneWordCarrier=homeoboxDene.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE);
 					String deneTypeAttribute = "";
 
-					logger.debug("line 369 has DENE_DENE_TYPE_ATTRIBUTE carrier=" + hasDeneWordCarrier) ;
+					logger.debug("line 369 " +homeoboxDeneName + " has DENE_DENE_TYPE_ATTRIBUTE carrier=" + hasDeneWordCarrier) ;
 					if(hasDeneWordCarrier) {
 						deneTypeAttribute = homeoboxDene.getString(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE);
 						logger.debug("line 372 deneTypeAttribute=" + deneTypeAttribute) ;
