@@ -361,7 +361,7 @@ public class Fertilizer {
 							homeoboxIndexDeneWord = homeoboxIndexDeneWords.getJSONObject(k);
 							if(homeoboxIndexDeneWord.getString(TeleonomeConstants.DENEWORD_DENEWORD_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_HOX_DENE_POINTER)){
 								denePointer =  homeoboxIndexDeneWord.getString(TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
-								logger.debug("adding denePointer=" + denePointer);
+								logger.debug("line 364 adding denePointer=" + denePointer);
 
 								fertilizationIdentity = new FertilizationIdentity(denePointer);
 
@@ -415,8 +415,9 @@ public class Fertilizer {
 									}
 								}else {
 									newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
-									logger.debug("line 405 adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity + " HoxDene Name=" + hoxDene.getString("Name")  + " newDeneIdentity=" + newDeneIdentity.toString());
-
+									logger.debug("line 418 adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity);
+									logger.debug("line 419 HoxDene Name=" + hoxDene.getString("Name") );
+									logger.debug("line 420 newDeneIdentity=" + newDeneIdentity.toString());
 									if(!DenomeUtils.containsDenomicElementByIdentity( pulseJSONObject, newDeneIdentity)) {
 										DenomeUtils.addDeneToDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
 									}else {
