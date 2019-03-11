@@ -422,6 +422,14 @@ public class Fertilizer {
 										DenomeUtils.addDeneToDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
 									}else {
 										logger.warn("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because it already existed" );
+										
+											try {
+												FileUtils.writeStringToFile(new File("Bug.denome"), pulseJSONObject.toString(4));
+											} catch (IOException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+										
 									}
 								}
 								
