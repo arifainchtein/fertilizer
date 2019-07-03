@@ -281,7 +281,7 @@ public class Fertilizer {
 
 						JSONObject onLoad = new JSONObject();
 						mutationDeneChainsJSONArray.put(onLoad);
-						onLoad.put("Name", TeleonomeConstants.DENE_TYPE_ON_LOAD_MUTATION);
+						onLoad.put("Name", TeleonomeConstants.DENECHAIN_ON_LOAD_MUTATION);
 						onLoad.put("Denes", new JSONArray());
 
 						JSONObject actionsToExecute = new JSONObject();
@@ -328,7 +328,7 @@ public class Fertilizer {
 						
 						JSONObject onFinish = new JSONObject();
 						mutationDeneChainsJSONArray.put(onFinish);
-						onFinish.put("Name", TeleonomeConstants.DENE_TYPE_ON_FINISH_MUTATION);
+						onFinish.put("Name", TeleonomeConstants.DENECHAIN_ON_FINISH_MUTATION);
 						onFinish.put("Denes", new JSONArray());
 						
 						DenomeUtils.addMutationToMutations(pulseJSONObject, newMutation);
