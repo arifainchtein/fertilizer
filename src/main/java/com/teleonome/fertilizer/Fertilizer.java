@@ -355,7 +355,7 @@ public class Fertilizer {
 				for(int j=0;j<homeoboxDenes.length();j++){
 					homeoboxDene = homeoboxDenes.getJSONObject(j);
 					homeoboxDeneName = homeoboxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE);
-					logger.debug("homeoboxDeneName name=" + homeoboxDeneName);
+					logger.debug("line 358 homeoboxDeneName name=" + homeoboxDeneName);
 					if(homeoboxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE).equals(TeleonomeConstants.SPERM_HOMEOBOX_INDEX)){
 						//
 						// we are in the correct dene to get the index of all the other denes that need to be acted upon in this homebox
@@ -408,7 +408,12 @@ public class Fertilizer {
 								// nucleus:denechain or it will be inserted into a mutation
 								// if its going into a nucleus:denechain then
 								if(DenomeUtils.isMutationIdentity(hoxDeneTargetPointer)) {
-									String mutationName=hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE);
+									//String mutationName=hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE);
+									//
+									// the mutation name is the second token which crresponds to the nucleus
+									//
+									String mutationName=hoxDeneTargetIdentity.getNucleusName();
+									
 									newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + mutationName);
 									logger.debug("line 397 adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity);
 									logger.debug("line 398 adding  HoxDene Name=" + hoxDene.getString("Name"));
