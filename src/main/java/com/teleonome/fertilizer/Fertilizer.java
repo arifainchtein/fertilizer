@@ -410,12 +410,15 @@ public class Fertilizer {
 								if(DenomeUtils.isMutationIdentity(hoxDeneTargetPointer)) {
 									String mutationName=hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE);
 									newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + mutationName);
-									logger.debug("line 397 adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity + " HoxDene Name=" + hoxDene.getString("Name")  + " newDeneIdentity=" + newDeneIdentity.toString());
-
+									logger.debug("line 397 adding hoxDeneTargetIdentity=" + hoxDeneTargetIdentity);
+									logger.debug("line 398 adding  HoxDene Name=" + hoxDene.getString("Name"));
+									logger.debug("line 399  newDeneIdentity=" + newDeneIdentity.toString());
+									logger.debug("line 400  mutationName=" + mutationName);
+									
 									if(DenomeUtils.containsMutation( pulseJSONObject, mutationName)) {
 										DenomeUtils.addDeneToMutationDeneChainByIdentity( pulseJSONObject, hoxDene,  hoxDeneTargetIdentity);
 									}else {
-										logger.warn("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because the mutation does not existed" );
+										logger.warn("Did not add " + hoxDeneTargetIdentity +":"+ hoxDene.getString("Name") + " because the mutation does not exists" );
 									}
 								}else {
 									newDeneIdentity = new Identity (hoxDeneTargetPointer  + ":" + hoxDene.getString(TeleonomeConstants.DENEWORD_NAME_ATTRIBUTE));
