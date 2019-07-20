@@ -264,12 +264,12 @@ public class Fertilizer {
 					}
 				}else if(actionJSONObject.has(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE) && actionJSONObject.getString(TeleonomeConstants.DENE_DENE_TYPE_ATTRIBUTE).equals(TeleonomeConstants.SPERM_DENE_TYPE_CREATE_MUTATION)){
 					newMutationName = (String) DenomeUtils.getDeneWordAttributeByDeneWordNameFromDene(actionJSONObject, TeleonomeConstants.SPERM_ACTION_DENEWORD_MUTATION_NAME, TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
-					logger.info("line 266 newMutationName=" + newMutationName);
+					logger.debug("line 266 newMutationName=" + newMutationName);
 					
 					if(!DenomeUtils.containsMutation( pulseJSONObject, newMutationName)) {
 						newMutationExecutionMode = (String) DenomeUtils.getDeneWordAttributeByDeneWordNameFromDene(actionJSONObject, "Execution Mode", TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
 						newMutationType = (String) DenomeUtils.getDeneWordAttributeByDeneWordNameFromDene(actionJSONObject, TeleonomeConstants.MUTATION_TYPE_ATTRIBUTE, TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
-						logger.info("line 271 newMutationType=" + newMutationType);
+						logger.debug("line 271 newMutationType=" + newMutationType);
 						actionTargetIdentity = new Identity(actionTargetPointer);
 						JSONObject newMutation = new JSONObject();
 						newMutation.put("Name", newMutationName);
