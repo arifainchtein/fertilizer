@@ -640,8 +640,8 @@ public class Fertilizer {
 				logger.warn("Fertilization Process Complete.");
 				logger.warn(" ");
 				logger.warn("look for:");
-				logger.warn("/home/pi/Teleonome.denome");
-				logger.warn("/home/pi/avocado/TeleonomeAnalisis.html");
+				logger.warn("/home/pi/Teleonome/Teleonome.denome");
+				logger.warn("/home/pi/Teleonome/avocado/TeleonomeAnalisis.html");
 				
 				
 				logger.warn("Fertlization Completed");
